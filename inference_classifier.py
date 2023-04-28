@@ -3,9 +3,6 @@ import pickle
 import cv2
 import mediapipe as mp
 import numpy as np
-from playsound import playsound
-from gtts import gTTS
-from io import BytesIO
 
 model_dict = pickle.load(open('./model.p', 'rb'))
 model = model_dict['model']
@@ -20,9 +17,8 @@ hands = mp_hands.Hands(static_image_mode=True, min_detection_confidence=0.3)
 
 labels_dict = {0: 'A', 1: 'B', 2: 'C', 3: 'D', 4: 'E', 5: 'F', 6: 'G', 7: 'H', 8: 'I', 9: 'J', 10: 'K', 11: 'L', 12: 'M',
                13: 'N', 14: 'O', 15: 'P', 16: 'Q', 17: 'R', 18: 'S', 19: 'T', 20: 'U', 21: 'V', 22: 'W', 23: 'X', 24: 'Y', 25: 'Z'}
-arr = list()
+predicted_word = str()
 while True:
-
     data_aux = []
     x_ = []
     y_ = []
@@ -71,16 +67,9 @@ while True:
         cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 0, 0), 4)
         cv2.putText(frame, predicted_character, (x1, y1 - 10), cv2.FONT_HERSHEY_SIMPLEX, 1.3, (0, 0, 0), 3,
                     cv2.LINE_AA)
-
-        arr.extend(predicted_character)
-        print(str(arr))
-
-        # fucntions all del shddinf ssheid
-
-        # mytext = predicted_character
-        # mp3_fp = BytesIO()
-        # tts = gTTS(text=mytext, lang='en')
-        # tts.write_to_fp(mp3_fp)
+        
+        predicted_word+=predicted_character
+        print(predicted_word)
 
     cv2.imshow('frame', frame)
     cv2.waitKey(1)
